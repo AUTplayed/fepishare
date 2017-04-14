@@ -8,21 +8,30 @@ $("#dropfile").on("dragover dragenter", function (e) {
     e.preventDefault();
     e.stopPropagation();
     $("#dropfile").addClass("dragover");
+    $("#textwrapper").html("release now lol");
 });
 $("#dropfile").on("dragleave dragend drop", function (e) {
     e.preventDefault();
     e.stopPropagation();
     $("#dropfile").removeClass("dragover");
+    $("#textwrapper").html("drop files here lol");
 });
 
 function response(res) {
     console.log(res.responseText);
-    alert(res.responseText);
+    $("#spinner").css("display","none");
+    if(res.responseText!="nah"){
+        window.prompt("Uploaded!","http://fepishare.duckdns.org/"+res.responseText);
+    }
+    else{
+        alert(res.responseText);
+    }
 }
 
 $("#dropfile").on("drop", function (e) {
     e.preventDefault();
     e.stopPropagation();
+    $("#spinner").css("display","flex");
     files = e.originalEvent.dataTransfer.files;
     for(var i = 0;i<files.length;i++){
         upload(files[i]);

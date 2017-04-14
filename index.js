@@ -24,7 +24,11 @@ app.use(express.static(__dirname + '/public'));
 //app.use(bodyParser.raw());
 app.use(busboy());
 
-app.get('/', function (req, res) {
+app.get('/u',function(req,res){
+    res.sendFile(path.join(__dirname + '/public/list.html'));
+});
+
+app.get('/u', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
@@ -38,6 +42,10 @@ app.post('/upload', function (req, res) {
 
             var ws = fs.createWriteStream(filepath);
             file.pipe(ws);
+            var len = 0;
+            file.on('data',function(data){
+                len+=data.length;
+            });
             ws.on('close', function () {
                 var curmd5 = Buffer.from(md5.sync(filepath)).toString('base64').substring(0, 10);
                 if (filestore[curmd5] !== undefined) {
@@ -46,10 +54,12 @@ app.post('/upload', function (req, res) {
                     res.send(curmd5);
                     return;
                 }
-                filestore[curmd5] = { number: curcounter, name: fname };
+                filestore[curmd5] = { number: curcounter, name: fname,length:len };
                 res.send(curmd5);
             });
         });
+    }else{
+        res.send("nah");
     }
 });
 

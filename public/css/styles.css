@@ -11,5 +11,17 @@ label{
     font-size: 20px;
 }
 .dragover{
-    background-color: cyan !important;
+    background-color: lightgray !important;
+}
+#textwrapper{
+    text-align: center;
+    padding-top: 15%;
+    justify-content:center;
+    align-items:center;
+}
+#spinner{
+    display:none;
+    justify-content:center;
+    align-items:center;
+    
 }
