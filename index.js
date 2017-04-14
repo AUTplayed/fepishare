@@ -24,12 +24,16 @@ app.use(express.static(__dirname + '/public'));
 //app.use(bodyParser.raw());
 app.use(busboy());
 
-app.get('/u',function(req,res){
+app.get('/',function(req,res){
     res.sendFile(path.join(__dirname + '/public/list.html'));
 });
 
-app.get('/u', function (req, res) {
+app.get('/up', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/index.html'));
+});
+
+app.get('/list',function(req,res){
+    res.json(filestore);
 });
 
 app.post('/upload', function (req, res) {
