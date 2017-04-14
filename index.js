@@ -1,4 +1,5 @@
 //External Dependencies
+require('dotenv').config();
 var express = require('express');
 var app = express();
 var path = require('path');
@@ -28,26 +29,28 @@ app.get('/', function (req, res) {
 });
 
 app.post('/upload', function (req, res) {
-    req.pipe(req.busboy);
-    req.busboy.on('file', function (fname, file) {
-        console.log(fname);
-        var curcounter = filecounter++;
-        var filepath = pj(pj(__dirname, STOREFOLDER), curcounter.toString());
+    if (req.query.pw == process.env.PWHASH) {
+        req.pipe(req.busboy);
+        req.busboy.on('file', function (fname, file) {
+            console.log(fname);
+            var curcounter = filecounter++;
+            var filepath = pj(pj(__dirname, STOREFOLDER), curcounter.toString());
 
-        var ws = fs.createWriteStream(filepath);
-        file.pipe(ws);
-        ws.on('close', function () {
-            var curmd5 = Buffer.from(md5.sync(filepath)).toString('base64').substring(0,10);
-            if (filestore[curmd5] !== undefined) {
-                curcounter--;
-                fs.unlinkSync(filepath);
+            var ws = fs.createWriteStream(filepath);
+            file.pipe(ws);
+            ws.on('close', function () {
+                var curmd5 = Buffer.from(md5.sync(filepath)).toString('base64').substring(0, 10);
+                if (filestore[curmd5] !== undefined) {
+                    curcounter--;
+                    fs.unlinkSync(filepath);
+                    res.send(curmd5);
+                    return;
+                }
+                filestore[curmd5] = { number: curcounter, name: fname };
                 res.send(curmd5);
-                return;
-            }
-            filestore[curmd5] = { number: curcounter, name: fname };
-            res.send(curmd5);
+            });
         });
-    });
+    }
 });
 
 app.get('/:hash', function (req, res) {

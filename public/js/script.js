@@ -2,7 +2,7 @@ $(document).ready(function () {
 
 });
 
-var files, file;
+var files;
 
 $("#dropfile").on("dragover dragenter", function (e) {
     e.preventDefault();
@@ -24,11 +24,16 @@ $("#dropfile").on("drop", function (e) {
     e.preventDefault();
     e.stopPropagation();
     files = e.originalEvent.dataTransfer.files;
-    file = files[0];
+    for(var i = 0;i<files.length;i++){
+        upload(files[i]);
+    }
+});
+
+function upload(file){
     var formdata = new FormData();
     formdata.append(file.name, file);
     $.ajax({
-        url: '/upload',
+        url: '/upload?pw='+hashCode($('#pw').val()),
         data: formdata,
         type: 'POST',
         processData: false,
@@ -37,10 +42,8 @@ $("#dropfile").on("drop", function (e) {
         success: response,
         error: response
     });
+}
 
-    /*
-    $.post("/upload",formdata,function(res){
-        console.log(res);
-    });
-    */
-});
+function hashCode(s){
+  return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
+}
