@@ -1,0 +1,9 @@
+#dropfile{
+    width: 200px;
+    height: 200px;
+    background-color: green;
+}
+
+.dragover{
+    background-color: greenyellow !important;
+}
