@@ -37,7 +37,7 @@ app.post('/upload', function (req, res) {
         var ws = fs.createWriteStream(filepath);
         file.pipe(ws);
         ws.on('close', function () {
-            var curmd5 = md5.sync(filepath);
+            var curmd5 = Buffer.from(md5.sync(filepath)).toString('base64').substring(0,10);
             if (filestore[curmd5] !== undefined) {
                 curcounter--;
                 fs.unlinkSync(filepath);
