@@ -14,7 +14,7 @@ var md5 = require('md5-file');
 //Declarations
 const STOREFOLDER = "store";
 var filecounter = 0;
-var filestore = [];
+var filestore = {};
 
 if (!fs.existsSync(pj(__dirname, STOREFOLDER)))
     fs.mkdirSync(pj(__dirname, STOREFOLDER));
@@ -25,11 +25,11 @@ app.use(express.static(__dirname + '/public'));
 app.use(busboy());
 
 app.get('/',function(req,res){
-    res.sendFile(path.join(__dirname + '/public/list.html'));
+    res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
 app.get('/up', function (req, res) {
-    res.sendFile(path.join(__dirname + '/public/index.html'));
+    res.sendFile(path.join(__dirname + '/public/upload.html'));
 });
 
 app.get('/list',function(req,res){
