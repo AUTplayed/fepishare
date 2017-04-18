@@ -21,7 +21,7 @@ function response(res) {
     console.log(res.responseText);
     $("#spinner").css("display","none");
     if(res.responseText!="nah"){
-        window.prompt("Uploaded!","http://fepishare.duckdns.org/"+res.responseText);
+        window.prompt("Uploaded!",window.location.origin+"/"+res.responseText);
     }
     else{
         alert(res.responseText);

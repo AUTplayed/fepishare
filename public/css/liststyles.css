@@ -1,0 +1,10 @@
+.row{
+    padding: 10px;
+}
+.col{
+    width: auto !important;
+    padding: 10px;
+    margin: 10px;
+    background-color: cadetblue;
+    color: white;
+}

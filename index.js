@@ -13,6 +13,7 @@ var md5 = require('md5-file');
 
 //Declarations
 const STOREFOLDER = "store";
+const MINUTE = 60000;
 var filecounter = 0;
 var filestore = {};
 
@@ -59,6 +60,7 @@ app.post('/upload', function (req, res) {
                     return;
                 }
                 filestore[curmd5] = { number: curcounter, name: fname,length:len };
+                setTimeout(function(){remFile(curmd5);},MINUTE*60*24);
                 res.send(curmd5);
             });
         });
@@ -80,3 +82,12 @@ app.get('/:hash', function (req, res) {
 });
 
 app.listen(process.env.PORT || 8080);
+
+
+function remFile(hash){
+    var filepath = pj(pj(__dirname, STOREFOLDER), filestore[hash].number.toString());
+    fs.unlink(filepath,function(){
+        console.log("deleted "+filepath);
+    });
+    delete filestore[hash];
+}
