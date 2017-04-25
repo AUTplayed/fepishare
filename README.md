@@ -19,6 +19,8 @@ Copy this code into your browser javascript console and execute
 hashCode("yourpassword");
 ```
 
+**The url for uploading is http://...../up**
+
 ## NOTE:
 
 Uploaded files are not listed after a restart, but are still saved.
